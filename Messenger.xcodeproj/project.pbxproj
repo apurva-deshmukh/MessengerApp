@@ -22,6 +22,7 @@
 		EED17B51248FFC5C0022C7AB /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EED17B50248FFC5C0022C7AB /* ProfileViewController.swift */; };
 		EED17B54249002C90022C7AB /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = EED17B53249002C90022C7AB /* Extensions.swift */; };
 		EED17B5624915B320022C7AB /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = EED17B5524915B320022C7AB /* GoogleService-Info.plist */; };
+		EED17B58249285140022C7AB /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EED17B57249285140022C7AB /* DatabaseManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -44,6 +45,7 @@
 		EED17B50248FFC5C0022C7AB /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		EED17B53249002C90022C7AB /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		EED17B5524915B320022C7AB /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
+		EED17B57249285140022C7AB /* DatabaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -149,6 +151,7 @@
 				EED17B2C248FF1740022C7AB /* AppDelegate.swift */,
 				EED17B2E248FF1740022C7AB /* SceneDelegate.swift */,
 				EED17B53249002C90022C7AB /* Extensions.swift */,
+				EED17B57249285140022C7AB /* DatabaseManager.swift */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -288,6 +291,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				EED17B47248FFBDC0022C7AB /* LoginViewController.swift in Sources */,
+				EED17B58249285140022C7AB /* DatabaseManager.swift in Sources */,
 				EED17B49248FFBEF0022C7AB /* RegisterViewController.swift in Sources */,
 				EED17B4F248FFC470022C7AB /* NewConversationViewController.swift in Sources */,
 				EED17B31248FF1740022C7AB /* ConversationsViewController.swift in Sources */,

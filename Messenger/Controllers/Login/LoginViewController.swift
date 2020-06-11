@@ -145,7 +145,7 @@ class LoginViewController: UIViewController {
     
     func alertUserLoginError() {
         let alert = UIAlertController(title: "Whoops!",
-                                      message: "Please enter all information to log in.",
+                                      message: "Invalid email address or password.",
                                       preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Dismiss",
                                       style: .cancel, handler: nil))

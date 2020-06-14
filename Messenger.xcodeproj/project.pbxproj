@@ -159,8 +159,8 @@
 		EED17B45248FFAFC0022C7AB /* Storyboards */ = {
 			isa = PBXGroup;
 			children = (
-				EED17B32248FF1740022C7AB /* Main.storyboard */,
 				EED17B37248FF1790022C7AB /* LaunchScreen.storyboard */,
+				EED17B32248FF1740022C7AB /* Main.storyboard */,
 			);
 			path = Storyboards;
 			sourceTree = "<group>";

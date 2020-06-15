@@ -181,6 +181,10 @@ class LoginViewController: UIViewController {
             }
             guard let result = authResult, error == nil else {
                 print("Error logging in")
+                strongSelf.alertUserLoginError()
+                DispatchQueue.main.async {
+                    strongSelf.spinner.dismiss()
+                }
                 return
             }
             

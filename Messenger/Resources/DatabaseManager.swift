@@ -15,6 +15,11 @@ final class DatabaseManager {
     
     private let database = Database.database().reference()
     
+    static func safeEmail(emailAddress: String) -> String {
+        var safeEmail = emailAddress.replacingOccurrences(of: ".", with: "-")
+        safeEmail = safeEmail.replacingOccurrences(of: "@", with: "-")
+        return safeEmail
+    }
 }
 
 // MARK: - Account Management
@@ -31,6 +36,7 @@ extension DatabaseManager {
                 completion(false)
                 return
             }
+            
             completion(true)
         })
     }
@@ -46,7 +52,56 @@ extension DatabaseManager {
                     completion(false)
                     return
                 }
-                completion(true)
+                
+                /*
+                 [
+                    [
+                        "name":
+                        "safe_email":
+                    ],
+                    [
+                        "name":
+                        "safe_email":
+                    ]
+                 ]
+                 */
+                
+                self.database.child("users").observeSingleEvent(of: .value, with: { snapshot in
+                    if var usersCollection = snapshot.value as? [[String: String]] {
+                        // append to user dictionary
+                        let newElement = [
+                            "name": user.firstName + " " + user.lastName,
+                            "email": user.safeEmail
+                        ]
+                        usersCollection.append(newElement)
+                        
+                        self.database.child("users").setValue(usersCollection, withCompletionBlock: { error, _ in
+                            guard error == nil else {
+                                completion(false)
+                                return
+                            }
+                            completion(true)
+                        })
+                        
+                    }
+                    else {
+                        // create that array
+                        let newCollection: [[String: String]] = [
+                            [
+                                "name": user.firstName + " " + user.lastName,
+                                "email": user.safeEmail
+                            ]
+                        ]
+                        
+                        self.database.child("users").setValue(newCollection, withCompletionBlock: { error, _ in
+                            guard error == nil else {
+                                completion(false)
+                                return
+                            }
+                            completion(true)
+                        })
+                    }
+                })
            })
     }
 }

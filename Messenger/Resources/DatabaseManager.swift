@@ -193,9 +193,9 @@ extension DatabaseManager {
                 break
             }
             
-            
+            let conversationId = "conversation_\(firstMessage.messageId)"
             let newConversationData: [String: Any] = [
-                "id": "conversation_\(firstMessage.messageId)",
+                "id": conversationId,
                 "other_user_email": otherUserEmail,
                 "latest_message": [
                     "date": dateString,
@@ -210,12 +210,14 @@ extension DatabaseManager {
                 
                 conversations.append(newConversationData)
                 userNode["conversations"] = conversations
-                ref.setValue(userNode, withCompletionBlock: { error, _ in
+                ref.setValue(userNode, withCompletionBlock: { [weak self] error, _ in
                     guard error == nil else {
                         completion(false)
                         return
                     }
-                    completion(true)
+                    self?.finishCreatingConversation(conversationId: conversationId,
+                                                    firstMessage: firstMessage,
+                                                    completion: completion)
                 })
                 
             } else {
@@ -224,16 +226,88 @@ extension DatabaseManager {
                 userNode["conversations"] = [
                     newConversationData
                 ]
-                ref.setValue(userNode, withCompletionBlock: { error, _ in
+                ref.setValue(userNode, withCompletionBlock: { [weak self] error, _ in
                     guard error == nil else {
                         completion(false)
                         return
                     }
-                    completion(true)
+                    self?.finishCreatingConversation(conversationId: conversationId,
+                                                    firstMessage: firstMessage,
+                                                    completion: completion)
                 })
             }
         })
     }
+    
+    private func finishCreatingConversation(conversationId: String, firstMessage: Message, completion: @escaping (Bool) -> Void) {
+        
+//        {
+//            "id": String,
+//            "type": text, photo, video,
+//            "contents": ,
+//            "date": Date(),
+//            "sender_email": String,
+//            "isRead": true/false
+//        }
+        var message = ""
+        
+        switch firstMessage.kind {
+        case .text(let messageText):
+            message = messageText
+        case .attributedText(_):
+            break
+        case .photo(_):
+            break
+        case .video(_):
+            break
+        case .location(_):
+            break
+        case .emoji(_):
+            break
+        case .audio(_):
+            break
+        case .contact(_):
+            break
+        case .custom(_):
+            break
+        }
+        
+        let messageDate = firstMessage.sentDate
+        let dateString = ChatViewController.dateFormatter.string(from: messageDate)
+        
+        guard let currentUserEmail = UserDefaults.standard.value(forKey: "email") as? String else {
+            completion(false)
+            return
+        }
+        let safeEmail = DatabaseManager.safeEmail(emailAddress: currentUserEmail)
+        
+        let collectionMessage: [String: Any] = [
+            "id": firstMessage.messageId,
+            "type": firstMessage.kind.messageKindString,
+            "contents": message,
+            "date": dateString,
+            "sender_email": safeEmail,
+            "is_read": false
+        ]
+        
+        let value: [String: Any] = [
+            "messages": [
+                collectionMessage
+            ]
+        ]
+        
+        print("adding convo: \(conversationId)")
+        database.child("\(conversationId)").setValue(value, withCompletionBlock: { error, _ in
+            guard error == nil else {
+                completion(false)
+                return
+            }
+            completion(true)
+        })
+
+        
+    }
+    
     
     /// Fetches and returns all conversations for the user with passed in email
     public func getAllConversations(for email: String, completion: @escaping (Result<String, Error>) -> Void) {
